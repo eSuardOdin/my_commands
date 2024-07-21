@@ -4,11 +4,15 @@ https://www.man7.org/linux/ man-pages/man1/cat.1.html
 - sudo gcc -o /usr/local/bin/mycat main.c utils/utils.c errors/errors.c
 */
 #include <stdio.h>
-#include "./utils/utils.h"
+#include <string.h>
+#include "utils/utils.h"
+#include "options/options.h"
+#include "ds/linked_list.h"
 
 int main(int argc, char *argv[])
 {
 
+    // Improve this : I'm getting too much memory in arrays
     int n = argc;
     char *opt[n];
     char *var[n];
@@ -39,15 +43,29 @@ int main(int argc, char *argv[])
     |  Main behavior  |
     o-----------------o
 */
-    
-    // for(int i = 0; i < n; i++)
-    // {
-    //     if(var[i] == "") break;
-    //     appendTemp(checkFile(var[i]));
-    // }
+    // Creating options list
+    CharNode *optionList = createCharList();
 
-    // printFile(checkFile("temp.txt"));
-    // removeTemp();
+    // Checking options
+    for(int i = 0; i < n; i++)
+    {
+        // If empty value -> end of array
+        if(strlen(opt[i]) < 1) break;
+        printf("Checking : %s\n",opt[i]);
+        // isOptionValid(opt[i]);
+        processOption(opt[i], optionList);
+    }
+
+
+    for(int i = 0; i < n; i++)
+    {
+        if(strlen(var[i]) < 1) break;
+        printf("Checking : %s\n",var[i]);
+        appendTemp(checkFile(var[i]));
+    }
+
+    printFile(checkFile("temp.txt"));
+    removeTemp();
 
     return 0;
 }

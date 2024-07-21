@@ -9,6 +9,12 @@
 #define MAX_LINE_LEN 1024
 #define TEMP_PATH "temp.txt"
 
+/**
+ * @brief Checks if a file is openable, exits with error if not.
+ * 
+ * @param filepath The filepath checked
+ * @return FILE* Pointer to the checked file if OK
+ */
 FILE *checkFile(char *filepath)
 {
     // Check if filename not too long
@@ -52,6 +58,10 @@ void printFile(FILE *source)
     fclose(source);
 }
 
+/**
+ * @brief Remove temporary file. If can't do, exit with error.
+ * 
+ */
 void removeTemp()
 {
     int errCode = remove(TEMP_PATH);
@@ -61,6 +71,11 @@ void removeTemp()
     }
 }
 
+/**
+ * @brief Concat source to temporary text file
+ * 
+ * @param source The file we are reading from
+ */
 void appendTemp(FILE *source)
 {
     // Open temp file to append
@@ -79,10 +94,17 @@ void appendTemp(FILE *source)
     fclose(source);
 }
 
-
+/**
+ * @brief Fill two arrays : Options and Variables
+ * 
+ * @param n Number of command line arguments
+ * @param args Arguments array
+ * @param opt Option array to fill
+ * @param var Variables array to fill
+ */
 void initVariables(int n, char *args[], char *opt[], char *var[])
 {
-    int began_vars = 0;
+    // int began_vars = 0;
     int i_opt = 0;
     int i_var = 0;
     // Getting arrays of options and filepaths (too long)
@@ -91,21 +113,25 @@ void initVariables(int n, char *args[], char *opt[], char *var[])
         // If getting an option before any filepath
         if(args[i][0] == '-')
         {
+            /* Don't care about options position
             // If we placed options after file path, error
             if(began_vars)
             {
                 handleError(-4, "Error, command must be formatted as so : \"[OPTIONS]...[FILES]\"\n");
             }
+            */
             opt[i_opt] = args[i];
             printf("Option %s is args[%d] and seen as opt[%d]\n", args[i], i, i_opt);
             i_opt++;
         }
         else
         {
+            /*
             if(!began_vars)
             {
                 began_vars = 1;
             }
+            */
             var[i_var] = args[i];
             i_var++;
         }
@@ -121,15 +147,16 @@ void initVariables(int n, char *args[], char *opt[], char *var[])
         var[i] = "";
     }
 
-    // Debug
-    printf("Debug from initVariables()\nOptions :\n");
-    for(int i = 0; i < n; i++)
-    {
-        printf("%s\n",opt[i]);
-    }
-    printf("Variables :\n");
-    for(int i = 0; i < n; i++)
-    {
-        printf("%s\n",var[i]);
-    }
+    // // Debug
+    // printf("Debug from initVariables()\nOptions :\n");
+    // for(int i = 0; i < n; i++)
+    // {
+    //     printf("%s\n",opt[i]);
+    // }
+    // printf("Variables :\n");
+    // for(int i = 0; i < n; i++)
+    // {
+    //     printf("%s\n",var[i]);
+    // }
 }
+
